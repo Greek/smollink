@@ -1,0 +1,6 @@
+__pycache__
+node_modules
+
+venv
+docker/postgres/data
+docker/redis/cache

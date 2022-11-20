@@ -1,0 +1,10 @@
+flask
+flask[async]
+flask_limiter
+# dotenv
+waitress
+prisma
+redis
+nanoid
+gunicorn
+hiredis

@@ -1,0 +1,26 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-py"
+  interface = "sync"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Link {
+  id          String @id
+  redirect_to String
+
+  creator    Creator? @relation(fields: [creator_id], references: [id])
+  creator_id String?
+}
+
+model Creator {
+  id         String @id @default(uuid())
+  ip_address String
+  links      Link[]
+}

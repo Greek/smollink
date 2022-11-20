@@ -1,0 +1,27 @@
+body {
+  background-color: #000;
+  color: #999;
+}
+
+textarea,
+input {
+  background-color: transparent !important;
+  padding-bottom: 0.5em !important;
+  padding-left: 0.5em;
+  outline: none;
+}
+
+input:focus-visible {
+  outline: none;
+}
+
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  border: 4px solid transparent;
+  background-clip: padding-box;
+  background-color: #4a4a4a;
+}

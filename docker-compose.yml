@@ -1,0 +1,24 @@
+services:
+  database:
+    container_name: sldb
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=app
+    ports:
+      - 5432:5432
+    volumes:
+      - ./docker/postgres/data:/var/lib/postgresql/data
+      - ./docker/postgres/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+
+  redis:
+    container_name: slcache
+    image: redis:7.0.4
+    restart: always
+    command: "redis-server /usr/local/etc/redis/redis.conf --save 20 1 --loglevel warning"
+    ports:
+      - 6379:6379
+    volumes:
+      - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./docker/redis/cache:/data
