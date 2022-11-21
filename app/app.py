@@ -122,19 +122,18 @@ async def create_shortlink():
     else:
         desired_protoc = "http://"
 
-    # Entry in database
     shortlink = Link.prisma().create(
         data={
             "id": generate(7),
             "redirect_to": desired_protoc
             + link.replace("http://", "").replace("https://", ""),
-        }
+        },
     )
 
     # Entry in Redis
     redis.set(shortlink.id, shortlink.redirect_to)
 
-    return dict(shortlink)
+    return dict(id=shortlink.id)
 
 
 if __name__ == "__main__":
