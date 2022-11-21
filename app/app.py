@@ -10,6 +10,8 @@ import redis
 import waitress
 from flask import (Flask, abort, make_response, redirect, render_template,
                    request)
+
+from werkzeug.exceptions import BadRequest, TooManyRequests
 from werkzeug.wrappers import Request, Response
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -64,15 +66,15 @@ limiter = Limiter(
 
 
 @app.errorhandler(429)
-def ratelimit_handler(e):
+def ratelimit_handler(error: TooManyRequests):
     """Handle a ratelimit"""
-    return app.json.response(error=e), 429
+    return app.json.response(error=error.description), 429
 
 
 @app.errorhandler(400)
-def bad_request_handler(e):
+def bad_request_handler(error: BadRequest):
     """Render a page on a bad request"""
-    return app.json.response(error=e), 400
+    return app.json.response(error=error.description), 400
 
 
 @app.route("/")
@@ -100,7 +102,7 @@ async def id_redirect(id: str):
 
 
 @app.route("/create", methods=["POST"])
-@limiter.limit("5/minutes")
+@limiter.limit("5/minutes", error_message="Slow down there..")
 async def create_shortlink():
     """Create a shortlink"""
     data = request.json
