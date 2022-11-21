@@ -2,24 +2,20 @@
 Main entry point for SmolLink
 """
 
+import logging
 import os
 import re
-import waitress
 
 import redis
+import waitress
+from flask import (Flask, abort, make_response, redirect, render_template,
+                   request)
+from werkzeug.wrappers import Request, Response
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-
-# from dotenv import load_dotenv
-from flask import Flask, abort, redirect, render_template, request, make_response
-
 from nanoid import generate as _gen
-from prisma.models import Link
-
 from prisma import Prisma, register
-
-# from middleware import Middleware
-
+from prisma.models import Link
 
 def generate(size: int):
     """Generate a nanoid with a custom alphabet."""
@@ -36,8 +32,30 @@ register(db)
 # load_dotenv()
 redis = redis.Redis.from_url(os.environ.get("REDIS_URL"), decode_responses=True)
 
+class Middleware:
+    def __init__(self, app: Flask):
+        self.app = app
+
+    def __call__(self, environ, start_response):
+        req = Request(environ)
+
+        if req.path == "/create":
+            # if req.referrer != os.environ.get("BASE_URL"):
+            #     res = Response(
+            #         f"Referer check failed; Requests must be made from {os.environ.get('BASE_URL')}",
+            #         status=400,
+            #     )
+            #     return res(environ, start_response)
+
+            if req.content_type != "application/json":
+                res = Response("Provided Content-Type not supported", status=400)
+                return res(environ, start_response)
+            
+        return self.app(environ, start_response)
 
 app = Flask(__name__)
+app.wsgi_app = Middleware(app.wsgi_app)
+
 limiter = Limiter(
     app,
     key_func=get_remote_address,
@@ -61,7 +79,6 @@ def bad_request_handler(e):
 def index():
     return render_template("index.html", app_name=APP_NAME)
 
-
 @app.route("/<id>")
 async def id_redirect(id: str):
     """Fetch a shortlink from Redis"""
@@ -83,7 +100,7 @@ async def id_redirect(id: str):
 
 
 @app.route("/create", methods=["POST"])
-@limiter.limit("5/minute")
+@limiter.limit("5/minutes")
 async def create_shortlink():
     """Create a shortlink"""
     data = request.json
@@ -121,4 +138,7 @@ async def create_shortlink():
 
 
 if __name__ == "__main__":
-    waitress.serve(app, host="0.0.0.0", port=8080)
+    logger = logging.getLogger("waitress")
+    logger.setLevel(logging.INFO)
+
+    waitress.serve(app, host="localhost", port=8080)
