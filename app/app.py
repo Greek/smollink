@@ -102,7 +102,7 @@ async def id_redirect(id: str):
 
 
 @app.route("/create", methods=["POST"])
-@limiter.limit("5/minutes", error_message="Slow down there..")
+@limiter.limit("50/minutes", error_message="Slow down there..")
 async def create_shortlink():
     """Create a shortlink"""
     data = request.json
