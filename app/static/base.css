@@ -5,7 +5,11 @@ body {
 
 @media (min-width: 1024px) {
   input {
-    width: 24rem;
+    width: 30rem;
+  }
+
+  .res-link, .res-link a, .res-link span {
+    font-size: 1.22em;
   }
 }
 
@@ -14,10 +18,9 @@ button {
   margin-top: 0.5em;
   margin-left: 0.5em;
   padding: 0.6em; 
-  border: none;
-
-  font-size: 1.2em;
-  
+  border: .2px #424242 solid;
+  border-radius: .3em;
+  font-size: 1.3em;
   background-color: #181818;
 }
 
@@ -32,12 +35,16 @@ input {
   padding-bottom: 0.5em !important;
   padding-left: 0.5em;
   color: #999;
-  font-size: 1.22em;
+  font-family: monospace;
+  font-size: 1.5em;
   outline: none;
+  min-width: 14em;
+  max-width: 30em;
 }
 
 input::placeholder { 
   color: #575656;
+ 
 }
 
 input:focus-visible {
@@ -70,9 +77,9 @@ input:focus-visible {
   margin-top: 0.5em;
 }
 
-.res-link, .res-link a{
+.res-link, .res-link a, .res-link span {
   padding-top: .5em;
   padding-right: .5em;
   color: inherit;
-  font-size: 1.22em;
+  font-size: 17px;
 }

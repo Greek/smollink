@@ -4,7 +4,7 @@ const finalText = document.getElementById("res-link");
 
 async function createShortLink() {
   copyBtn.innerHTML = "";
-  finalText.innerHTML = `Creating link...`;
+  finalText.innerHTML = `<span>Creating link...</span>`;
   const data = await fetch("/create", {
     method: "POST",
     referrer: document.domain,
@@ -18,11 +18,8 @@ async function createShortLink() {
 
   if (data.id) {
     finalText.innerHTML = `<a href="https://${document.domain}/${data.id}">https://${document.domain}/${data.id}</a> `;
-    copyBtn.innerHTML = `<button
-    class="w-auto p-[.6em] mt-2 bg-[#181818] font-mono hover:bg-[#242424] focus-visible:outline-none">
-    📋
-</button>`;
-  } else finalText.innerHTML = `${data.error}`;
+    copyBtn.innerHTML = `<button>📋</button>`;
+  } else finalText.innerHTML = `<span>${data.error}</span>`;
   return;
 }
 
