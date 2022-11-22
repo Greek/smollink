@@ -108,13 +108,16 @@ def index():
     )
 
     if creator.disabled:
-        return render_template(
-            "error.html",
-            app_name=APP_NAME,
-            is_disabled=creator.disabled,
-            disable_reason=disable_reason,
-            title="Uh oh!!"
-        ), 401
+        return (
+            render_template(
+                "error.html",
+                app_name=APP_NAME,
+                is_disabled=creator.disabled,
+                disable_reason=disable_reason,
+                title="Uh oh!!",
+            ),
+            401,
+        )
 
     return render_template(
         "index.html",
