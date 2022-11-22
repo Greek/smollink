@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-py"
+  provider  = "prisma-client-py"
   interface = "sync"
 }
 
@@ -12,15 +12,19 @@ datasource db {
 }
 
 model Link {
-  id          String @id
+  id          String   @id
   redirect_to String
+  disabled    Boolean? @default(false)
+  disabled_reason String?
 
   creator    Creator? @relation(fields: [creator_id], references: [id])
   creator_id String?
 }
 
 model Creator {
-  id         String @id @default(uuid())
+  id         String   @id @default(uuid())
   ip_address String
+  disabled   Boolean? @default(false)
+  disabled_reason String? 
   links      Link[]
 }
