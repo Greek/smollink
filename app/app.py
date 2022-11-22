@@ -171,10 +171,10 @@ def create_shortlink():
     try:
         link: str = data["link"]
     except KeyError:
-        return abort(400, "Please provide a link in the body")
+        return abort(400, "Please provide a link.")
 
     if link is None or len(link) <= 0:
-        return abort(400, "Please provide a link in the body")
+        return abort(400, "Please provide a link.")
 
     if re.search(LINK_REGEX, link) is None:
         return abort(400, "Please provide a valid URL")
