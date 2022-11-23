@@ -166,7 +166,7 @@ def id_redirect(shortlink_id: str):
         app.logger.info(f"Hit CACHE for {shortlink_id}")
         return redirect(link_cache[shortlink_id])
 
-    shortlink = redis.get(shortlink_id)
+    shortlink = redis.get(f"shortlink:{shortlink_id}")
     if shortlink:
         link_cache[shortlink_id] = shortlink
 
@@ -248,7 +248,7 @@ def create_shortlink():
     )
 
     # Entry in Redis
-    redis.set(shortlink.id, shortlink.redirect_to)
+    redis.set(f"shortlink:{shortlink.id}", shortlink.redirect_to)
 
     return dict(id=shortlink.id)
 
@@ -260,7 +260,7 @@ async def delete_shortlink(shortlink_id: str):
         return app.json.response(error="This route is not available!"), 401
 
     remove_cached_link(shortlink_id)
-    redis.delete(shortlink_id)
+    redis.delete(f"shortlink:{shortlink_id}")
     Link.prisma().delete(where={"id": shortlink_id})
 
     return app.json.response(result=f"Deleted {shortlink_id}.")
@@ -275,7 +275,7 @@ async def disable_shortlink(shortlink_id: str):
     reason: str = request.args.get("reason")
 
     remove_cached_link(shortlink_id)
-    redis.delete(shortlink_id)
+    redis.delete(f"shortlink:{shortlink_id}")
     Link.prisma().update(
         where={"id": shortlink_id},
         data={
