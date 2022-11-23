@@ -9,7 +9,7 @@ RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 COPY . /code
 
+RUN cd /code/app
 RUN prisma generate
-RUN cd app
 
 CMD ["python", "app/app.py"]
