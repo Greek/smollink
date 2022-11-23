@@ -102,7 +102,7 @@ def bad_request_handler(error: BadRequest):
 def index():
     """The base index page everyone sees :P. Probably ;)"""
 
-    creator = Creator.prisma().find_first(where={"ip_address": get_remote_address()})
+    creator = Creator.prisma().find_first(where={"ip_address": request.headers.get('X-Forwarded-For')})
 
     if creator is not None and creator.disabled:
         disable_reason = (f"Reason: {creator.disabled_reason}" if creator.disabled_reason else "")       
@@ -188,12 +188,12 @@ def create_shortlink():
         desired_protoc = "http://"
 
     creator = Creator.prisma().find_first(
-        where={"ip_address": get_remote_address()},
+        where={"ip_address": request.headers.get('X-Forwarded-For')},
     )
     if creator is None:
         creator = Creator.prisma().create(
             data={
-                "ip_address": get_remote_address(),
+                "ip_address": request.headers.get('X-Forwarded-For'),
             }
         )
 
