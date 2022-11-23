@@ -5,5 +5,5 @@ venv
 docker/postgres/data
 docker/redis/cache
 
-./.env
+.env
 app/.env
