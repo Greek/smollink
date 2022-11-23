@@ -11,6 +11,14 @@ p {
   input {
     width: 30rem;
   }
+
+  .bottom a, .bottom p {
+    font-size: 15px!important;
+  }
+
+  .sep {
+    margin-top: 17px!important;
+  }
 }
 
 button {
@@ -80,7 +88,7 @@ input:focus-visible {
   border: .2px solid;
   margin-left: 10px;
   margin-right: 10px;
-  margin-top: 20px;
+  margin-top: 12px;
   height: 17px;
   border-left: #424242;
 }
@@ -101,13 +109,13 @@ input:focus-visible {
   bottom: 0;
   left: 0;
   margin-left: 1em;
-  font-size: 17px;
   color: rgb(78, 78, 78);
   user-select: none;
   font-family: monospace;
 }
 
-.bottom a {
+.bottom a, .bottom p {
   color: inherit;
   text-underline-offset: 2px;
+  font-size: 12px;
 }

@@ -13,7 +13,7 @@ from redis import Redis
 import waitress
 from flask import Flask, abort, make_response, redirect, render_template, request
 
-from werkzeug.exceptions import BadRequest, TooManyRequests
+from werkzeug.exceptions import BadRequest, TooManyRequests, InternalServerError
 from werkzeug.wrappers import Request, Response
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -83,6 +83,10 @@ def remove_cached_link(shortlink_id: str):
     link_cache.pop(shortlink_id)
     return True
 
+@app.errorhandler(500)
+def server_error_handler(error: InternalServerError):
+    """Render a page on a bad request"""
+    return render_template("error.html", message="Sorry! There was an error on the server. This has been reported and will be fixed shortly"), 500
 
 @app.errorhandler(429)
 def ratelimit_handler(error: TooManyRequests):
