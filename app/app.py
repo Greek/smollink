@@ -158,7 +158,7 @@ def id_redirect(shortlink_id: str):
                 render_template(
                     "error.html",
                     code=403,
-                    message=f"This SmolLink has been disabled due to a violation in {APP_NAME}'s Terms of Use.",
+                    message=f"This SmolLink has been disabled due to a violation in {APP_NAME}'s Terms of Use.\n{shortlink.disabled_reason}",
                 )
             )
 
