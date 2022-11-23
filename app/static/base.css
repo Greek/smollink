@@ -17,9 +17,9 @@ button {
   width: auto;
   margin-top: 0.5em;
   margin-left: 0.5em;
-  padding: 0.6em; 
-  border: .2px #424242 solid;
-  border-radius: .3em;
+  padding: 0.6em;
+  border: 0.2px #424242 solid;
+  border-radius: 0.3em;
   font-size: 1em;
   background-color: #181818;
 }
@@ -42,9 +42,8 @@ input {
   max-width: 30em;
 }
 
-input::placeholder { 
+input::placeholder {
   color: #575656;
- 
 }
 
 input:focus-visible {
@@ -77,9 +76,38 @@ input:focus-visible {
   margin-top: 0.5em;
 }
 
-.res-link, .res-link a, .res-link span {
-  padding-top: .5em;
-  padding-right: .5em;
+.sep {
+  border: .2px solid;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 20px;
+  height: 17px;
+  border-left: #424242;
+}
+
+.res-link,
+.res-link a,
+.res-link span {
+  padding-top: 0.5em;
+  padding-right: 0.5em;
   color: inherit;
   font-size: 17px;
+}
+
+.bottom {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin-left: 1em;
+  font-size: 17px;
+  color: rgb(78, 78, 78);
+  user-select: none;
+  font-family: monospace;
+}
+
+.bottom a {
+  color: inherit;
+  text-underline-offset: 2px;
 }

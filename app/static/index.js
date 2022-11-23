@@ -17,7 +17,7 @@ async function createShortLink() {
   }).then((res) => res.json());
 
   if (data.id) {
-    finalText.innerHTML = `<a href="https://${document.domain}/${data.id}">https://${document.domain}/${data.id}</a> `;
+    finalText.innerHTML = `<a href="https://${document.domain}${document.location.port ? `:${document.location.port}` : ''}/${data.id}">https://${document.domain}${document.location.port ? `:${document.location.port}` : ''}/${data.id}</a> `;
     copyBtn.innerHTML = `<button>📋</button>`;
   } else finalText.innerHTML = `<span>${data.error}</span>`;
   return;

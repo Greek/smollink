@@ -4,3 +4,6 @@ node_modules
 venv
 docker/postgres/data
 docker/redis/cache
+
+./.env
+app/.env

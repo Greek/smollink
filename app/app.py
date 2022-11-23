@@ -21,7 +21,6 @@ from nanoid import generate as _gen
 from prisma import Prisma, register
 from prisma.models import Link, Creator
 
-
 def generate(size: int):
     """Generate a nanoid with a custom alphabet."""
     return _gen("1234567890AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz", size)
@@ -53,7 +52,6 @@ db = Prisma()
 db.connect()
 register(db)
 
-# load_dotenv()
 redis: Redis = redis.Redis.from_url(os.environ.get("REDIS_URL"), decode_responses=True)
 
 app = Flask(__name__)
@@ -102,6 +100,7 @@ def bad_request_handler(error: BadRequest):
 def index():
     """The base index page everyone sees :P. Probably ;)"""
 
+    anarchy: bool = os.environ.get("ANARCHY")
     creator = Creator.prisma().find_first(where={"ip_address": request.headers.get('X-Forwarded-For') or request.remote_addr})
 
     if creator is not None and creator.disabled:
@@ -120,8 +119,13 @@ def index():
     return render_template(
         "index.html",
         app_name=APP_NAME,
+        anarchy=anarchy,
+        report_link=os.environ.get("REPORT_CONTACT")
     )
 
+@app.route("/tos")
+def tos():
+    return render_template("info.html")
 
 @app.route("/<shortlink_id>")
 def id_redirect(shortlink_id: str):

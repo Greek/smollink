@@ -10,9 +10,13 @@
 </head>
 
 <body>
-  <div class="main">
-    {% block content %}
-    {% endblock %}
+  {% block content %}
+  {% endblock %}
+  <div class="bottom">
+    <p>by <a href="/">980</p></a> <span class="sep"></span>    
+    <p><a href="/tos">terms of use</a></p> <span class="sep"></span>
+    <p><a href={{report_link}}>report a link</a></p><span class="sep"></span>
+    <p><a href="https://github.com/Greek/SmolLink">source</a></p>
   </div>
   {% block scripts_body %}
   {% endblock %}

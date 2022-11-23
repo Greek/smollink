@@ -2,12 +2,13 @@
 
 {% block head %}
 {{ super() }}
+<title>SmolLink</title>
 {% endblock %}
 
 {% block content %}
+<div class="main">
     <form>
-        <input placeholder="put your URL here"
-            style="border-bottom: .3px solid #444;" id="url-input"></input>
+        <input placeholder="put your URL here" style="border-bottom: .3px solid #444;" id="url-input"></input>
         <button id="url-submit">
             <input type="submit" value="🔗" hidden /> 🔗
         </button>
@@ -16,6 +17,7 @@
     <div class="results">
         <p id="res-link" class="res-link"></p><span id="copy"></span>
     </div>
+</div>
 {% endblock %}
 {% block scripts_body %}
 <script src="static/index.js"></script>
