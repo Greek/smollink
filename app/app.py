@@ -103,11 +103,9 @@ def index():
     """The base index page everyone sees :P. Probably ;)"""
 
     creator = Creator.prisma().find_first(where={"ip_address": get_remote_address()})
-    disable_reason = (
-        f"Reason: {creator.disabled_reason}" if creator.disabled_reason else ""
-    )
 
-    if creator.disabled:
+    if creator is not None and creator.disabled:
+        disable_reason = (f"Reason: {creator.disabled_reason}" if creator.disabled_reason else "")       
         return (
             render_template(
                 "error.html",
@@ -257,4 +255,4 @@ if __name__ == "__main__":
     logger = logging.getLogger("waitress")
     logger.setLevel(logging.INFO)
 
-    waitress.serve(app, host="localhost", port=os.environ.get("PORT"))
+    waitress.serve(app, port=os.environ.get("PORT"))
