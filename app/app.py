@@ -84,10 +84,17 @@ def remove_cached_link(shortlink_id: str):
     link_cache.pop(shortlink_id)
     return True
 
+def get_real_ip():
+    """ Get a user's real IP. """
+    if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
+        return request.environ['REMOTE_ADDR']
+    else:
+       return request.environ.split(',', 1)['HTTP_X_FORWARDED_FOR'] # if behind a proxy
 
 @app.errorhandler(500)
-def server_error_handler():
+def server_error_handler(error):
     """Render a page on a bad request"""
+    print(error.description)
     return (
         render_template(
             "error.html",
@@ -116,7 +123,7 @@ def index():
     anarchy: bool = os.environ.get("ANARCHY")
     creator = Creator.prisma().find_first(
         where={
-            "ip_address": request.headers.get("X-Forwarded-For") or request.remote_addr
+            "ip_address": get_real_ip()
         }
     )
 
@@ -215,14 +222,13 @@ def create_shortlink():
 
     creator = Creator.prisma().find_first(
         where={
-            "ip_address": request.headers.get("X-Forwarded-For") or request.remote_addr
+            "ip_address": get_real_ip()
         },
     )
     if creator is None:
         creator = Creator.prisma().create(
             data={
-                "ip_address": request.headers.get("X-Forwarded-For")
-                or request.remote_addr,
+                "ip_address": get_real_ip(),
             }
         )
 
