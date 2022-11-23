@@ -13,13 +13,14 @@ from redis import Redis
 import waitress
 from flask import Flask, abort, make_response, redirect, render_template, request
 
-from werkzeug.exceptions import BadRequest, TooManyRequests, InternalServerError
+from werkzeug.exceptions import BadRequest, TooManyRequests
 from werkzeug.wrappers import Request, Response
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from nanoid import generate as _gen
 from prisma import Prisma, register
 from prisma.models import Link, Creator
+
 
 def generate(size: int):
     """Generate a nanoid with a custom alphabet."""
@@ -83,10 +84,18 @@ def remove_cached_link(shortlink_id: str):
     link_cache.pop(shortlink_id)
     return True
 
+
 @app.errorhandler(500)
-def server_error_handler(error: InternalServerError):
+def server_error_handler():
     """Render a page on a bad request"""
-    return render_template("error.html", message="Sorry! There was an error on the server. This has been reported and will be fixed shortly"), 500
+    return (
+        render_template(
+            "error.html",
+            message="Sorry! There was an error on the server. This has been reported and will be fixed shortly",
+        ),
+        500,
+    )
+
 
 @app.errorhandler(429)
 def ratelimit_handler(error: TooManyRequests):
@@ -105,10 +114,16 @@ def index():
     """The base index page everyone sees :P. Probably ;)"""
 
     anarchy: bool = os.environ.get("ANARCHY")
-    creator = Creator.prisma().find_first(where={"ip_address": request.headers.get('X-Forwarded-For') or request.remote_addr})
+    creator = Creator.prisma().find_first(
+        where={
+            "ip_address": request.headers.get("X-Forwarded-For") or request.remote_addr
+        }
+    )
 
     if creator is not None and creator.disabled:
-        disable_reason = (f"Reason: {creator.disabled_reason}" if creator.disabled_reason else "")      
+        disable_reason = (
+            f"Reason: {creator.disabled_reason}" if creator.disabled_reason else ""
+        )
         return (
             render_template(
                 "error.html",
@@ -124,12 +139,15 @@ def index():
         "index.html",
         app_name=APP_NAME,
         anarchy=anarchy,
-        report_link=os.environ.get("REPORT_CONTACT")
+        report_link=os.environ.get("REPORT_CONTACT"),
     )
+
 
 @app.route("/tos")
 def tos():
+    """ Terms of Use page. """
     return render_template("info.html")
+
 
 @app.route("/<shortlink_id>")
 def id_redirect(shortlink_id: str):
@@ -196,12 +214,15 @@ def create_shortlink():
         desired_protoc = "http://"
 
     creator = Creator.prisma().find_first(
-        where={"ip_address": request.headers.get('X-Forwarded-For') or request.remote_addr},
+        where={
+            "ip_address": request.headers.get("X-Forwarded-For") or request.remote_addr
+        },
     )
     if creator is None:
         creator = Creator.prisma().create(
             data={
-                "ip_address": request.headers.get('X-Forwarded-For') or request.remote_addr,
+                "ip_address": request.headers.get("X-Forwarded-For")
+                or request.remote_addr,
             }
         )
 
