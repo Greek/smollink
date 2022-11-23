@@ -58,6 +58,9 @@ redis: Redis = redis.Redis.from_url(os.environ.get("REDIS_URL"), decode_response
 app = Flask(__name__)
 app.wsgi_app = Middleware(app.wsgi_app)
 
+logger = logging.getLogger("waitress")
+logger.setLevel(logging.INFO)
+
 LINK_REGEX = "((http|https)\:\/\/)?[a-zA-Z0-9\.\/\?\:@\-_=#]+\.([a-zA-Z]){2,6}([a-zA-Z0-9\.\&\/\?\:@\-_=#])*"
 APP_NAME = "SmolLink"
 
@@ -89,7 +92,7 @@ def get_real_ip():
     if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
         return request.environ['REMOTE_ADDR']
     else:
-       return request.environ.split(',', 1)['HTTP_X_FORWARDED_FOR'] # if behind a proxy
+        return request.environ['HTTP_X_FORWARDED_FOR'].split(',', 1)[0] # if behind a proxy
 
 @app.errorhandler(500)
 def server_error_handler(error):
@@ -287,7 +290,4 @@ async def disable_shortlink(shortlink_id: str):
 
 
 if __name__ == "__main__":
-    logger = logging.getLogger("waitress")
-    logger.setLevel(logging.INFO)
-
     waitress.serve(app, port=os.environ.get("PORT") or 3000)
