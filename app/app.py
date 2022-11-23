@@ -255,4 +255,4 @@ if __name__ == "__main__":
     logger = logging.getLogger("waitress")
     logger.setLevel(logging.INFO)
 
-    waitress.serve(app, port=os.environ.get("PORT"))
+    waitress.serve(app, port=os.environ.get("PORT") or 3000)

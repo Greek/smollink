@@ -7,10 +7,6 @@ body {
   input {
     width: 30rem;
   }
-
-  .res-link, .res-link a, .res-link span {
-    font-size: 1.22em;
-  }
 }
 
 button {
@@ -20,7 +16,7 @@ button {
   padding: 0.6em; 
   border: .2px #424242 solid;
   border-radius: .3em;
-  font-size: 1.3em;
+  font-size: 1em;
   background-color: #181818;
 }
 
@@ -36,7 +32,7 @@ input {
   padding-left: 0.5em;
   color: #999;
   font-family: monospace;
-  font-size: 1.5em;
+  font-size: 17px;
   outline: none;
   min-width: 14em;
   max-width: 30em;
