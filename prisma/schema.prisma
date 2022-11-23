@@ -23,7 +23,7 @@ model Link {
 
 model Creator {
   id         String   @id @default(uuid())
-  ip_address String
+  ip_address String?
   disabled   Boolean? @default(false)
   disabled_reason String? 
   links      Link[]

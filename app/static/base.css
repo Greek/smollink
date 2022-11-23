@@ -3,6 +3,10 @@ body {
   color: #999;
 }
 
+p {
+  font-size: 18px;
+}
+
 @media (min-width: 1024px) {
   input {
     width: 30rem;

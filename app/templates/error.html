@@ -8,8 +8,6 @@
 {% block content %}
 {% if is_disabled %}
 <h1>This IP address is blocked from creating new <b>SmolLink</b>s.</h1>
-<p>{{ disable_reason if disable_reason else ""}}</p>
-{% else %}
-<p>{{ message }} </p>
 {% endif %}
+<p>{{ message if message else "" }} </p>
 {% endblock %}
