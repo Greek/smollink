@@ -118,8 +118,12 @@ def bad_request_handler(error: BadRequest):
     """Render a page on a bad request"""
     return app.json.response(error=error.description), 400
 
-
 @app.route("/")
+def index_redirect():
+    """ Redirect to /make """
+    return redirect('/make')
+
+@app.route("/make")
 def index():
     """The base index page everyone sees :P. Probably ;)"""
 
