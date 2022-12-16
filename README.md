@@ -15,19 +15,15 @@ $ python -m pip install -r requirements.txt
 ```sh
 $ python -m prisma generate # Generate models
 $ python -m prisma migrate deploy # Push the migrations
-
-# Congratulations!! You made it!!!
 ```
-
-Docker support is coming soon hopefully. I'm just too scared to write instructions on it =)
-
 ## Running SmolLink
 
 Simply run,
 ```sh
-
-$ python app/app.py # This will start a waitress server running on any port you specify or port 3000
+# This will start a waitress server running on any port you specify or port 3000
 # You can also use your WSGI server tool of your choice if you want, like gunicorn.
+$ python app/app.py 
+
 ```
 
 For development, run
